@@ -1,0 +1,90 @@
+<!--  Window topic: part_1 document code is here.  -->
+<!--  window is a global object .so we don't need to type window everytime. It is an optional . Example:
+    window.alert("error occur") ;
+    or,  alert("error coming . ")
+    -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Window Object Example</title>
+</head>
+<body>
+  <h1>Window Object Demo</h1>
+
+  <script>
+    // ==============================
+    // ✅ Properties
+    // ==============================
+
+    // 1. document (DOM access)
+    console.log(document.title);
+    // Output: "Window Object Example"
+
+    // 2. location (URL info)
+    console.log(location.href);
+    // Example Output: "http://127.0.0.1:5500/index.html"
+    console.log(location.hostname);
+    // Example Output: "127.0.0.1"
+    console.log(location.protocol);
+    // Example Output: "http:"
+
+    // 3. navigator (browser info)
+    console.log(navigator.userAgent);
+    // Example Output: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)..."
+    console.log(navigator.language);
+    // Example Output: "en-US"
+
+    // 4. history (navigation)
+    // history.back();   // Goes one page back
+    // history.forward();// Goes one page forward
+    // (Can't show console output here, but it works in browser navigation)
+
+    // ==============================
+    // ✅ Methods (Properties that act like functions)
+    // ==============================
+
+    // 5. innerWidth & innerHeight (viewport size)
+    console.log("Width:", window.innerWidth);
+    // Example Output: Width: 1366
+    console.log("Height:", window.innerHeight);
+    // Example Output: Height: 728
+
+    // 6. localStorage (save data permanently in browser)
+    localStorage.setItem("username", "Ranok");
+    console.log(localStorage.getItem("username"));
+    // Output: "Ranok"
+    localStorage.removeItem("username");
+
+    // ==============================
+    // ✅ Popup Methods
+    // ==============================
+
+    // 7. alert()
+    alert("Welcome to the Window Object Demo!");
+    // Output: A popup box saying "Welcome to the Window Object Demo!"
+
+    // 8. confirm()
+    let isSure = confirm("Do you like JavaScript?");
+    console.log(isSure);
+    // Output: true (if OK clicked) or false (if Cancel clicked)
+
+    // 9. prompt()
+    let userName = prompt("Enter your name:");
+    console.log("User entered:", userName);
+    // Output: Whatever user typed (or null if Cancel)
+
+    // ==============================
+    // ✅ Timer Methods
+    // ==============================
+
+    // 10. setTimeout()
+    setTimeout(() => {
+      console.log("This message appears after 3 seconds!");
+      // Output (after 3s): "This message appears after 3 seconds!"
+    }, 3000);
+
+  </script>
+</body>
+</html>

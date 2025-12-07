@@ -1,0 +1,52 @@
+<!--
+Output: The heading changes from blue "Hello, DOM!" → red "Text Changed with DOM!"
+-->
+<!--
+How it works:
+
+1. Browser loads HTML → creates DOM tree.
+
+3. JavaScript selects elements (h1 and button).
+
+3. When button is clicked → JavaScript changes text and style of h1. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DOM Mini Project</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+      }
+      #title {
+        color: blue;
+      }
+      button {
+        padding: 10px 20px;
+        margin-top: 20px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">Hello, DOM!</h1>
+    <button id="btn">Click Me</button>
+
+    <script>
+      // Select elements
+      let heading = document.getElementById("title");
+      let button = document.getElementById("btn");
+
+      // Add event listener
+      button.addEventListener("click", function () {
+        heading.textContent = "Text Changed with DOM!";
+        heading.style.color = "red";
+        heading.style.fontSize = "30px";
+      });
+    </script>
+  </body>
+</html>

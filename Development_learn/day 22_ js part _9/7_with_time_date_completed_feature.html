@@ -1,0 +1,277 @@
+<!-- 7.most advance : with time , completed, date, feature -->
+<!-- 🔹 What’s New?
+
+✅ Click task text → mark as completed (toggle strikethrough).
+
+⏰ Start Time → when task is added.
+
+⏳ End Time → when task is completed.
+
+Saved in Local Storage so data stays after refresh. -->
+
+<!--
+
+Perfect 👍 We’ll extend your To-Do App with two more powerful features:
+
+✅ 1. Task Completed Feature → Click a task to toggle strikethrough (done/not done).
+
+⏰ 2. Date & Time Feature → Each task will store start time (when added) and optional end time (when marked done).
+
+I’ll also add full comments so you can learn line by line. -->
+
+<!-- 🌐 DOM Playground – Completed Tasks + Date & Time -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced To-Do App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      color: #000;
+      transition: all 0.3s ease;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 450px;
+    }
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      transition: 0.3s;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    ul {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 5px auto;
+      width: 95%;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
+    }
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .clear-btn {
+      background: darkred;
+      margin-top: 15px;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    small {
+      font-size: 12px;
+      color: #555;
+    }
+    /* 🌙 Dark Mode */
+    .dark-mode {
+      background: #121212;
+      color: white;
+    }
+    .dark-mode section {
+      background: #1e1e1e;
+    }
+    .dark-mode li {
+      background: #2c2c2c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 Advanced To-Do App</h1>
+  <button id="darkModeBtn">🌙 Enable Dark Mode</button>
+
+  <section>
+    <h2>📝 To-Do List with Time</h2>
+    <input type="text" id="taskInput" placeholder="Enter a task..." />
+    <button id="addBtn">Add Task</button>
+    <button id="clearBtn" class="clear-btn">🗑️ Clear All</button>
+    <ul id="taskList"></ul>
+  </section>
+
+  <script>
+    // =============================
+    // DOM Elements
+    // =============================
+    let taskInput = document.getElementById("taskInput");
+    let addBtn = document.getElementById("addBtn");
+    let taskList = document.getElementById("taskList");
+    let clearBtn = document.getElementById("clearBtn");
+    let darkModeBtn = document.getElementById("darkModeBtn");
+
+    // =============================
+    // Load tasks on page start
+    // =============================
+    window.addEventListener("DOMContentLoaded", function() {
+      let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      savedTasks.forEach(task => createTaskElement(task));
+    });
+
+    // =============================
+    // Add Task
+    // =============================
+    addBtn.addEventListener("click", function() {
+      let taskText = taskInput.value.trim();
+
+      if (taskText !== "") {
+        let newTask = {
+          text: taskText,
+          completed: false,
+          startTime: new Date().toLocaleString(), // store current time
+          endTime: null
+        };
+        createTaskElement(newTask);
+        saveTask(newTask);
+        taskInput.value = "";
+      }
+    });
+
+    // =============================
+    // Create Task UI
+    // =============================
+    function createTaskElement(taskObj) {
+      let li = document.createElement("li");
+
+      // --- Top row (task text + delete button)
+      let taskHeader = document.createElement("div");
+      taskHeader.classList.add("task-header");
+
+      let span = document.createElement("span");
+      span.textContent = taskObj.text;
+
+      // Apply completed style if needed
+      if (taskObj.completed) {
+        span.classList.add("completed");
+      }
+
+      // ✅ Toggle complete when clicking on text
+      span.addEventListener("click", function() {
+        span.classList.toggle("completed");
+        taskObj.completed = !taskObj.completed;
+        taskObj.endTime = taskObj.completed ? new Date().toLocaleString() : null;
+        updateTask(taskObj);
+        updateTimeDisplay(timeInfo, taskObj);
+      });
+
+      let delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.classList.add("delete-btn");
+
+      // Delete task
+      delBtn.addEventListener("click", function() {
+        taskList.removeChild(li);
+        removeTask(taskObj);
+      });
+
+      taskHeader.appendChild(span);
+      taskHeader.appendChild(delBtn);
+
+      // --- Time info
+      let timeInfo = document.createElement("small");
+      updateTimeDisplay(timeInfo, taskObj);
+
+      // Append to LI
+      li.appendChild(taskHeader);
+      li.appendChild(timeInfo);
+      taskList.appendChild(li);
+    }
+
+    // =============================
+    // Time Display Helper
+    // =============================
+    function updateTimeDisplay(element, taskObj) {
+      if (taskObj.completed && taskObj.endTime) {
+        element.textContent = `Start: ${taskObj.startTime} | End: ${taskObj.endTime}`;
+      } else {
+        element.textContent = `Start: ${taskObj.startTime}`;
+      }
+    }
+
+    // =============================
+    // Storage Functions
+    // =============================
+    function saveTask(taskObj) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.push(taskObj);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function removeTask(taskObj) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks = tasks.filter(task => task.text !== taskObj.text || task.startTime !== taskObj.startTime);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function updateTask(updatedTask) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks = tasks.map(task =>
+        task.text === updatedTask.text && task.startTime === updatedTask.startTime ? updatedTask : task
+      );
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    // =============================
+    // Clear All
+    // =============================
+    clearBtn.addEventListener("click", function() {
+      taskList.innerHTML = "";
+      localStorage.removeItem("tasks");
+    });
+
+    // =============================
+    // Dark Mode Toggle
+    // =============================
+    darkModeBtn.addEventListener("click", function() {
+      document.body.classList.toggle("dark-mode");
+
+      if (document.body.classList.contains("dark-mode")) {
+        darkModeBtn.textContent = "☀️ Enable Light Mode";
+      } else {
+        darkModeBtn.textContent = "🌙 Enable Dark Mode";
+      }
+    });
+  </script>
+</body>
+</html>
+

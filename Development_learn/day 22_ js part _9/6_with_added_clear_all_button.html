@@ -1,0 +1,228 @@
+<!--  6. update: with clear all button added in todo list  -->
+
+<!-- 🔹 New Features:
+
+🗑️1. Clear All Button → Deletes all tasks from UI & storage.
+
+2. Local Storage persists tasks → Refresh page, tasks stay.
+
+3. Delete single tasks or all tasks at once.
+
+4. Works with Dark Mode Toggle 🌙/☀️. -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Playground with Clear All</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      color: #000;
+      transition: all 0.3s ease;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      transition: 0.3s;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    ul {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 5px auto;
+      width: 300px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .clear-btn {
+      background: darkred;
+      margin-top: 15px;
+    }
+
+    /* 🌙 Dark Mode Styles */
+    .dark-mode {
+      background: #121212;
+      color: white;
+    }
+    .dark-mode section {
+      background: #1e1e1e;
+    }
+    .dark-mode li {
+      background: #2c2c2c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 DOM Playground</h1>
+  <button id="darkModeBtn">🌙 Enable Dark Mode</button>
+
+  <!-- Project 1: Change Text -->
+  <section>
+    <h2 id="title">Hello, DOM!</h2>
+    <button id="btn">Change Text</button>
+  </section>
+
+  <!-- Project 2: Live Text Preview -->
+  <section>
+    <h2>Live Input Preview</h2>
+    <input type="text" id="userInput" placeholder="Type something..." />
+    <h3 id="display">Your text will appear here...</h3>
+  </section>
+
+  <!-- Project 3: To-Do List -->
+  <section>
+    <h2>📝 To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter a task..." />
+    <button id="addBtn">Add Task</button>
+    <button id="clearBtn" class="clear-btn">🗑️ Clear All</button>
+    <ul id="taskList"></ul>
+  </section>
+
+  <script>
+    // =============================
+    // Project 1: Change Text
+    // =============================
+    let heading = document.getElementById("title");
+    let button = document.getElementById("btn");
+
+    button.addEventListener("click", function() {
+      heading.textContent = "Text Changed with DOM!";
+      heading.style.color = "red";
+      heading.style.fontSize = "30px";
+    });
+
+    // =============================
+    // Project 2: Live Input Preview
+    // =============================
+    let inputBox = document.getElementById("userInput");
+    let displayText = document.getElementById("display");
+
+    inputBox.addEventListener("input", function() {
+      displayText.textContent = inputBox.value;
+    });
+
+    // =============================
+    // Project 3: To-Do List with Local Storage
+    // =============================
+    let taskInput = document.getElementById("taskInput");
+    let addBtn = document.getElementById("addBtn");
+    let taskList = document.getElementById("taskList");
+    let clearBtn = document.getElementById("clearBtn");
+
+    // ---- Load tasks from Local Storage on page load ----
+    window.addEventListener("DOMContentLoaded", function() {
+      let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      savedTasks.forEach(task => {
+        createTaskElement(task);
+      });
+    });
+
+    // ---- Add new task ----
+    addBtn.addEventListener("click", function() {
+      let taskText = taskInput.value.trim();
+
+      if (taskText !== "") {
+        createTaskElement(taskText); // create UI element
+        saveTask(taskText);          // save to storage
+        taskInput.value = "";        // clear input
+      }
+    });
+
+    // ---- Function to create a task element ----
+    function createTaskElement(taskText) {
+      let li = document.createElement("li");
+      li.textContent = taskText;
+
+      let delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.classList.add("delete-btn");
+
+      delBtn.addEventListener("click", function() {
+        taskList.removeChild(li);
+        removeTask(taskText);
+      });
+
+      li.appendChild(delBtn);
+      taskList.appendChild(li);
+    }
+
+    // ---- Save task to Local Storage ----
+    function saveTask(taskText) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.push(taskText);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    // ---- Remove single task from Local Storage ----
+    function removeTask(taskText) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks = tasks.filter(task => task !== taskText);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    // ---- Clear All Tasks ----
+    clearBtn.addEventListener("click", function() {
+      taskList.innerHTML = "";             // remove all tasks from UI
+      localStorage.removeItem("tasks");    // remove all tasks from storage
+    });
+
+    // =============================
+    // Project 4: Dark Mode Toggle 🌙
+    // =============================
+    let darkModeBtn = document.getElementById("darkModeBtn");
+
+    darkModeBtn.addEventListener("click", function() {
+      document.body.classList.toggle("dark-mode");
+
+      if (document.body.classList.contains("dark-mode")) {
+        darkModeBtn.textContent = "☀️ Enable Light Mode";
+      } else {
+        darkModeBtn.textContent = "🌙 Enable Dark Mode";
+      }
+    });
+  </script>
+
+</body>
+</html>

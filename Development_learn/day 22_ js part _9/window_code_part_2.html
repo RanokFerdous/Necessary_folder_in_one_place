@@ -1,0 +1,104 @@
+<!--  window code part_ 2  -->
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Window Advanced Properties Example</title>
+</head>
+<body>
+  <h1>Window Object - Advanced Properties</h1>
+
+  <script>
+    // ==============================
+    // 1. window.parent
+    // ==============================
+    console.log(window.parent === window);
+    // true (if not inside an iframe)
+
+    // ==============================
+    // 2. window.top
+    // ==============================
+    console.log(window.top === window);
+    // true (if this is the top window, not inside iframe)
+
+    // ==============================
+    // 3. window.frames
+    // ==============================
+    console.log(window.frames.length);
+    // 0 (if no iframes exist in the page)
+
+    // ==============================
+    // 4. window.self
+    // ==============================
+    console.log(window.self === window);
+    // true (always refers to itself)
+
+    // ==============================
+    // 5. window.opener
+    // ==============================
+    console.log(window.opener);
+    // null (unless this page was opened by window.open())
+
+    // ==============================
+    // 6. window.closed
+    // ==============================
+    // Only useful if we open a new window
+    let newWin = window.open("", "", "width=200,height=200");
+    console.log(newWin.closed);
+    // false (when just opened)
+
+    // ==============================
+    // 7. window.name
+    // ==============================
+    window.name = "MyMainWindow";
+    console.log(window.name);
+    // "MyMainWindow"
+
+    // ==============================
+    // 8. window.status
+    // ==============================
+    window.status = "Page Loading...";
+    console.log(window.status);
+    // "Page Loading..." (but modern browsers may ignore this)
+
+    // ==============================
+    // 9. window.devicePixelRatio
+    // ==============================
+    console.log(window.devicePixelRatio);
+    // Example Output: 1 (normal), 2 (Retina display)
+
+    // ==============================
+    // 10. window.scrollX / scrollY
+    // ==============================
+    console.log(window.scrollX, window.scrollY);
+    // Example Output: 0 0 (if not scrolled)
+
+    // ==============================
+    // 11. window.pageXOffset / pageYOffset
+    // ==============================
+    console.log(window.pageXOffset, window.pageYOffset);
+    // Same as scrollX / scrollY
+
+    // ==============================
+    // 12. window.performance
+    // ==============================
+    console.log(window.performance.now());
+    // Example Output: 345.123456 (time in ms since page load)
+
+    // ==============================
+    // 13. window.crypto
+    // ==============================
+    let arr = new Uint32Array(3);
+    window.crypto.getRandomValues(arr);
+    console.log(arr);
+    // Example Output: [1234567890, 987654321, 555666777]
+
+    // ==============================
+    // 14. window.indexedDB
+    // ==============================
+    console.log(window.indexedDB);
+    // Output: IDBFactory object (used for database storage)
+
+  </script>
+</body>
+</html>

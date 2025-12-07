@@ -1,0 +1,124 @@
+<!-- Document topic 2 : code  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            padding: 20px;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #333;
+            background: #fff;
+            border-radius: 8px;
+        }
+        .log {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Document Object Example</h1>
+
+    <!-- Forms -->
+    <form id="form1">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+    </form>
+    <form id="form2">
+        <input type="email" name="email" placeholder="Email">
+    </form>
+
+    <!-- Images -->
+    <img src="https://via.placeholder.com/100" alt="Placeholder 1">
+    <img src="https://via.placeholder.com/100" alt="Placeholder 2">
+
+    <!-- Links -->
+    <a href="https://example.com">Example Link</a>
+    <a href="https://google.com">Google Link</a>
+
+    <p class="highlight">This is a highlighted paragraph.</p>
+    <p>Another paragraph.</p>
+
+    <!-- Output area -->
+    <h2>Outputs:</h2>
+    <div id="output"></div>
+
+    <script>
+        // Helper function to show results on page + console
+        function showOutput(label, value) {
+            console.log(label, value);
+            const out = document.getElementById("output");
+            const div = document.createElement("div");
+            div.className = "log";
+            div.textContent = `${label} ${value}`;
+            out.appendChild(div);
+        }
+
+        // 1. document.title
+        showOutput("Current title:", document.title);
+        document.title = "New Page Title";
+        showOutput("New title set:", document.title);
+
+        // 2. document.URL
+        showOutput("Current URL:", document.URL);
+
+        // 3. document.domain
+        showOutput("Domain:", document.domain);
+
+        // 4. document.body
+        showOutput("Body element tag:", document.body.tagName);
+        document.body.style.backgroundColor = "#f0f0f0";
+
+        // 5. document.head
+        showOutput("Head element tag:", document.head.tagName);
+
+        // 6. document.forms
+        showOutput("Forms count:", document.forms.length);
+        showOutput("First form ID:", document.forms[0].id);
+
+        // 7. document.images
+        showOutput("Images count:", document.images.length);
+
+        // 8. document.links
+        showOutput("Links count:", document.links.length);
+
+        // 9. document.scripts
+        showOutput("Scripts count:", document.scripts.length);
+
+        // 10. document.forms[0].elements
+        const formElements = document.forms[0].elements;
+        showOutput("Form1 elements count:", formElements.length);
+
+        // 11. document.all (not recommended)
+        showOutput("All elements count (document.all):", document.all.length);
+
+        // 12. document.cookie
+        document.cookie = "username=Ranok";
+        showOutput("Cookies:", document.cookie);
+
+        // 13. document.readyState
+        showOutput("Document readyState:", document.readyState);
+
+        // 14. document.querySelector() and querySelectorAll()
+        const firstPara = document.querySelector("p");
+        showOutput("First paragraph text:", firstPara.textContent);
+
+        const allParas = document.querySelectorAll("p");
+        showOutput("Total paragraphs:", allParas.length);
+
+        // Extra: Change text color of all paragraphs
+        allParas.forEach(p => p.style.color = "blue");
+    </script>
+</body>
+</html>

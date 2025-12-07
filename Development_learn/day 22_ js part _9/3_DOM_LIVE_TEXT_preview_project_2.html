@@ -1,0 +1,57 @@
+<!--  DOM project:  Live text preview project:  -->
+
+<!-- Awesome 🚀 Let’s make a DOM project with an input box where whatever you type will instantly show up on the screen. -->
+
+<!-- 🔹 How it works:
+
+1. User types in the input box.
+
+3. JavaScript listens to the input event.
+
+3 .Text instantly updates inside the <h2> element.
+
+👉 Example:
+ If you type Hello DOM, the green heading shows:
+  <b>Hello DOM</b>
+   -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Input Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    h2 {
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Type Something 👇</h1>
+  <input type="text" id="userInput" placeholder="Start typing here..." />
+  <h2 id="display">Your text will appear here...</h2>
+
+  <script>
+    // Select elements
+    let inputBox = document.getElementById("userInput");
+    let displayText = document.getElementById("display");
+
+    // Add event listener (when user types)
+    inputBox.addEventListener("input", function() {
+      displayText.textContent = inputBox.value;
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!--  create 1 project using 3 another mini-project
+  1.button click
+  2. Live Text preview
+  3. todo list  -->
+
+  <!-- Great 🚀 Let’s combine all 3 projects (Change Text, Live Input Preview, To-Do List) into one single page. This way, you’ll have a DOM practice playground. -->
+<!--
+🔹 Features in this Playground:
+
+1. Change Text → Click button to change text & style.
+
+2. Live Input Preview → Whatever you type shows instantly below.
+
+3.To-Do List → Add & remove tasks dynamically. -->
+
+<!-- 🔥 Let’s extend the DOM Playground with a Dark Mode Toggle 🌙/☀️ -->
+<!--
+🔹 Features in this Playground:
+
+1 . Change Text → Click to change text and style.
+
+2. Live Input Preview → Type in the input and text updates instantly.
+
+3 . To-Do List → Add & remove tasks.
+
+4. Dark Mode Toggle 🌙/☀️ → Switch between light and dark themes.
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Playground with Dark Mode</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;   /* default light background */
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      color: #000;           /* default text color */
+      transition: all 0.3s ease; /* smooth transition when changing theme */
+    }
+    section {
+      background: white;     /* section background */
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background: #007BFF;   /* blue button */
+      color: white;
+      transition: 0.3s;
+    }
+    input {
+      padding: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    ul {
+      margin-top: 20px;
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #f9f9f9;
+      padding: 10px;
+      margin: 5px auto;
+      width: 300px;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .delete-btn {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    /* 🌙 Dark Mode Styles */
+    .dark-mode {
+      background: #121212;   /* dark background */
+      color: white;          /* text color white */
+    }
+    .dark-mode section {
+      background: #1e1e1e;   /* darker section background */
+    }
+    .dark-mode li {
+      background: #2c2c2c;   /* dark gray list items */
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 DOM Playground</h1>
+  <!-- Dark mode toggle button -->
+  <button id="darkModeBtn">🌙 Enable Dark Mode</button>
+
+  <!-- Project 1: Change Text -->
+  <section>
+    <h2 id="title">Hello, DOM!</h2>
+    <button id="btn">Change Text</button>
+  </section>
+
+  <!-- Project 2: Live Text Preview -->
+  <section>
+    <h2>Live Input Preview</h2>
+    <input type="text" id="userInput" placeholder="Type something..." />
+    <h3 id="display">Your text will appear here...</h3>
+  </section>
+
+  <!-- Project 3: To-Do List -->
+  <section>
+    <h2>📝 To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter a task..." />
+    <button id="addBtn">Add Task</button>
+    <ul id="taskList"></ul>
+  </section>
+
+  <script>
+    // =============================
+    // Project 1: Change Text
+    // =============================
+    let heading = document.getElementById("title"); // select <h2> element
+    let button = document.getElementById("btn");    // select "Change Text" button
+
+    // when button clicked → change text + style
+    button.addEventListener("click", function() {
+      heading.textContent = "Text Changed with DOM!"; // change text
+      heading.style.color = "red";                    // change color
+      heading.style.fontSize = "30px";                // change font size
+    });
+
+    // =============================
+    // Project 2: Live Input Preview
+    // =============================
+    let inputBox = document.getElementById("userInput"); // select input box
+    let displayText = document.getElementById("display"); // select <h3> for displaying
+
+    // when user types → update text in real time
+    inputBox.addEventListener("input", function() {
+      displayText.textContent = inputBox.value; // show input value inside <h3>
+    });
+
+    // =============================
+    // Project 3: To-Do List
+    // =============================
+    let taskInput = document.getElementById("taskInput"); // select task input
+    let addBtn = document.getElementById("addBtn");       // select add button
+    let taskList = document.getElementById("taskList");   // select <ul> for tasks
+
+    // when add button clicked → create new list item
+    addBtn.addEventListener("click", function() {
+      let taskText = taskInput.value.trim(); // get input value and remove spaces
+
+      if (taskText !== "") { // check input is not empty
+        let li = document.createElement("li"); // create <li>
+        li.textContent = taskText;             // set text inside li
+
+        let delBtn = document.createElement("button"); // create delete button
+        delBtn.textContent = "Delete";                 // set button text
+        delBtn.classList.add("delete-btn");            // add CSS class
+
+        // when delete button clicked → remove li
+        delBtn.addEventListener("click", function() {
+          taskList.removeChild(li); // remove this li from ul
+        });
+
+        li.appendChild(delBtn); // add delete button inside li
+        taskList.appendChild(li); // add li inside ul
+
+        taskInput.value = ""; // clear input box
+      }
+    });
+
+    // =============================
+    // Project 4: Dark Mode Toggle 🌙
+    // =============================
+    let darkModeBtn = document.getElementById("darkModeBtn"); // select dark mode button
+
+    // toggle dark mode on button click
+    darkModeBtn.addEventListener("click", function() {
+      document.body.classList.toggle("dark-mode"); // add/remove "dark-mode" class
+
+      // change button text depending on mode
+      if (document.body.classList.contains("dark-mode")) {
+        darkModeBtn.textContent = "☀️ Enable Light Mode";
+      } else {
+        darkModeBtn.textContent = "🌙 Enable Dark Mode";
+      }
+    });
+  </script>
+
+</body>
+</html>
